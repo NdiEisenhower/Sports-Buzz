@@ -7,14 +7,31 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.MainActivity"
     tools:showIn="@layout/activity_main">
-
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/pullToRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sportsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:text="Pull to refresh"
+        app:layout_constraintEnd_toEndOf="@+id/pullToRefresh"
+        app:layout_constraintStart_toStartOf="@+id/pullToRefresh"
+        app:layout_constraintTop_toTopOf="@+id/pullToRefresh" />
 </androidx.constraintlayout.widget.ConstraintLayout>

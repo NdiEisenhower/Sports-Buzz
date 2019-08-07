@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,7 +68,7 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             String headline = sport.getHeadline();
             String blurb = sport.getBlurb();
-            String category = TextUtils.isEmpty(sport.getCategory())? sport.getCategoryDisplayName():sport.getCategory();
+            String category = TextUtils.isEmpty(sport.getCategory()) ? sport.getCategoryDisplayName() : sport.getCategory();
             String updatedDate = sport.getUpdatedDate();
             String image = sport.getImageUrlLocal() + sport.getSmallImageName();
 
@@ -85,11 +86,12 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 viewHolderHeadline.textViewHeadline.setVisibility(TextUtils.isEmpty(headline) ? View.GONE : View.VISIBLE);
                 viewHolderHeadline.textViewCategory.setVisibility(TextUtils.isEmpty(category) ? View.GONE : View.VISIBLE);
-                viewHolderHeadline.textViewUpdatedDate.setVisibility(date > 0 ? View.GONE : View.VISIBLE);
+                viewHolderHeadline.textViewUpdatedDate.setVisibility(date < 1 ? View.GONE : View.VISIBLE);
 
                 Glide.with(context)
                         .asDrawable()
                         .load(image)
+                        .placeholder(R.drawable.placeholder)
                         .into(new CustomTarget<Drawable>() {
                             @Override
                             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
@@ -98,6 +100,7 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                             @Override
                             public void onLoadCleared(@Nullable Drawable placeholder) {
+                                viewHolderHeadline.constraintLayoutImage.setBackground(placeholder);
                             }
                         });
 
@@ -114,7 +117,7 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder.textViewHeadline.setVisibility(TextUtils.isEmpty(headline) ? View.GONE : View.VISIBLE);
                 viewHolder.textViewBlurb.setVisibility(TextUtils.isEmpty(blurb) ? View.GONE : View.VISIBLE);
                 viewHolder.textViewCategory.setVisibility(TextUtils.isEmpty(category) ? View.GONE : View.VISIBLE);
-                viewHolder.textViewUpdatedDate.setVisibility(date > 0 ? View.GONE : View.VISIBLE);
+                viewHolder.textViewUpdatedDate.setVisibility(date <1 ? View.GONE : View.VISIBLE);
                 viewHolder.imageViewThumbnail.setVisibility(TextUtils.isEmpty(image) ? View.GONE : View.VISIBLE);
 
                 viewHolder.textViewHeadline.setText(headline);
@@ -125,6 +128,7 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 Glide.with(context)
                         .load(image)
                         .centerCrop()
+                        .placeholder(R.drawable.placeholder)
                         .into(viewHolder.imageViewThumbnail);
 
 
