@@ -16,6 +16,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def name = "Sports Buzz_v${variant.versionName}(${variant.versionCode}).apk"
+                output.outputFileName = name
+            }
+
+        }
     }
     compileOptions {
         sourceCompatibility = '1.8'
