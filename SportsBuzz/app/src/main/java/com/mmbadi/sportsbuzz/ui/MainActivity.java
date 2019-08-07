@@ -1,24 +1,12 @@
 package com.mmbadi.sportsbuzz.ui;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.View;
-import android.widget.Toast;
-
-import com.mmbadi.sportsbuzz.R;
-import com.mmbadi.sportsbuzz.adapters.ArticleViewAdapter;
-import com.mmbadi.sportsbuzz.models.Sport;
-import com.mmbadi.sportsbuzz.services.ApiService;
-import com.mmbadi.sportsbuzz.services.NetworkReceiver;
-import com.mmbadi.sportsbuzz.services.RetroClient;
-import com.mmbadi.sportsbuzz.utills.NetworkUtils;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +16,14 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.mmbadi.sportsbuzz.R;
+import com.mmbadi.sportsbuzz.adapters.ArticleViewAdapter;
+import com.mmbadi.sportsbuzz.models.Sport;
+import com.mmbadi.sportsbuzz.services.ApiService;
+import com.mmbadi.sportsbuzz.services.NetworkReceiver;
+import com.mmbadi.sportsbuzz.services.RetroClient;
+import com.mmbadi.sportsbuzz.utills.NetworkUtils;
 
 import java.util.List;
 
@@ -117,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements ArticleViewAdapte
 
                 alertDialog.setTitle(title);
                 alertDialog.setMessage(message);
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
@@ -127,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements ArticleViewAdapte
                     alertDialog.show();
                 }
             } catch (Exception e) {
-                Log.d(TAG, "Show Dialog: " + e.getMessage());
+                e.printStackTrace();
             }
         }
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/articleLayout"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     app:cardBackgroundColor="#E4E4E8"
     app:cardCornerRadius="20dp"
     android:layout_marginTop="10dp"
@@ -101,9 +101,8 @@
             android:text="Manchester City manager Pep Guardiola expects Phil Foden to play a key role in the side over the next decade and says the 18-year-old will be more involved in the first team next season."
             android:textColor="@color/text_color"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/featured_date"
+            app:layout_constraintTop_toBottomOf="@+id/article_image"
              />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

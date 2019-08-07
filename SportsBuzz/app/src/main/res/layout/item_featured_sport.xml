@@ -4,13 +4,27 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/articleLayout"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp"
     app:cardBackgroundColor="@android:color/darker_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/featured_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content" >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/featured_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/featured_category"
@@ -26,7 +40,7 @@
             android:padding="6dp"
             tool:text="Rugby"
             android:textColor="@android:color/holo_red_dark"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +52,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             android:background="@color/featured_footer_background"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,21 +63,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:padding="10dp"
+                android:paddingLeft="10dp"
+                android:paddingEnd="10dp"
                 tool:text="Though love from early coaches made Beast"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:paddingRight="10dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/featured_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:padding="10dp"
+                android:paddingLeft="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
                 tool:text="2019-04-04"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingRight="10dp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

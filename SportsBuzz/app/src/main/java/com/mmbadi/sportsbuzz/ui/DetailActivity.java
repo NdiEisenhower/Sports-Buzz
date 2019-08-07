@@ -5,6 +5,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.mmbadi.sportsbuzz.R;
@@ -15,20 +27,6 @@ import com.mmbadi.sportsbuzz.services.NetworkReceiver;
 import com.mmbadi.sportsbuzz.services.RetroClient;
 import com.mmbadi.sportsbuzz.utills.DateHelper;
 import com.mmbadi.sportsbuzz.utills.NetworkUtils;
-import com.mmbadi.sportsbuzz.utills.Utills;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import android.text.Html;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,12 +37,14 @@ import static com.mmbadi.sportsbuzz.services.NetworkReceiver.NETWORK_LISTENER;
 public class DetailActivity extends AppCompatActivity implements Callback<Article> {
     private final String TAG = DetailActivity.class.getSimpleName();
     private Sport sport;
-    private AppCompatTextView textViewArticleHeadline, textViewArticleUpdatedDate, textViewArticleBody;
+    private AppCompatTextView textViewArticleHeadline, textViewArticleUpdatedDate, textViewArticleBody, textViewArticleAuthor;
     private AppCompatImageView imageViewArticleImage;
     private int NETWORK_CURRENT = -1;
     private ApiService apiService;
     private AlertDialog alertDialog;
     private Article article;
+    private String detailsDateFormat = "yyy-MM-dd HH:mm";
+
     private NetworkReceiver networkReceiver = new NetworkReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -67,6 +67,7 @@ public class DetailActivity extends AppCompatActivity implements Callback<Articl
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        apiService = RetroClient.getApiService();
         initializeViews();
 
         Intent intent = getIntent();
@@ -83,7 +84,7 @@ public class DetailActivity extends AppCompatActivity implements Callback<Articl
                 alertDialog = new AlertDialog.Builder(this).create();
                 alertDialog.setTitle(title);
                 alertDialog.setMessage(message);
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
@@ -104,30 +105,28 @@ public class DetailActivity extends AppCompatActivity implements Callback<Articl
         NETWORK_CURRENT = NetworkUtils.getNetworkStatus(this);
 
         if (NETWORK_CURRENT == NetworkReceiver.TYPE_NO_NETWORK) {
-            Utills utills = new Utills();
             showAlertDialog(getString(R.string.info), getString(R.string.no_network_connection));
-        } else if (sport != null) {
+        } else if (sport != null && apiService != null) {
             String siteName = sport.getSiteName();
             String urlName = sport.getUrlName();
             String urlFriendlyDate = sport.getUrlFriendlyDate();
             String urlFriendlyHeadline = sport.getUrlFriendlyHeadline();
 
             if (!TextUtils.isEmpty(siteName) && !TextUtils.isEmpty(urlName) && !TextUtils.isEmpty(urlFriendlyDate) && !TextUtils.isEmpty(urlFriendlyHeadline)) {
-                ApiService api = RetroClient.getApiService();
-                Call<Article> article = api.getArtcile(siteName, urlName, urlFriendlyDate, urlFriendlyHeadline);
+
+                Call<Article> article = apiService.getArtcile(siteName, urlName, urlFriendlyDate, urlFriendlyHeadline);
                 article.enqueue(this);
             }
-
         }
-
     }
-
 
     private void initializeViews() {
         textViewArticleHeadline = findViewById(R.id.article_headline);
         textViewArticleUpdatedDate = findViewById(R.id.article_date);
         textViewArticleBody = findViewById(R.id.article_body);
+        textViewArticleAuthor = findViewById(R.id.article_author);
         imageViewArticleImage = findViewById(R.id.article_image);
+
     }
 
     private void setUpViews() {
@@ -139,17 +138,23 @@ public class DetailActivity extends AppCompatActivity implements Callback<Articl
             String updatedDate = article.getUpdatedDate();
             Spanned body = Html.fromHtml(article.getBody());
             String image = article.getImageUrlLocal() + article.getLargeImageName();
-
+            String imageDescription = sport.getExtraImageAlt();
+            String author = sport.getAuthor();
             long date = DateHelper.extractDate(updatedDate);
-            updatedDate = DateHelper.getFormattedDate(date);
+            updatedDate = DateHelper.getFormattedDate(date, detailsDateFormat);
 
             textViewArticleHeadline.setVisibility(TextUtils.isEmpty(headline) ? View.GONE : View.VISIBLE);
             textViewArticleUpdatedDate.setVisibility(TextUtils.isEmpty(updatedDate) ? View.GONE : View.VISIBLE);
             textViewArticleBody.setVisibility(TextUtils.isEmpty(body) ? View.GONE : View.VISIBLE);
+            textViewArticleAuthor.setVisibility(TextUtils.isEmpty(author) ? View.GONE : View.VISIBLE);
+
+            if (!TextUtils.isEmpty(imageDescription))
+                imageViewArticleImage.setContentDescription(imageDescription);
 
             textViewArticleHeadline.setText(headline);
             textViewArticleUpdatedDate.setText(updatedDate);
             textViewArticleBody.setText(body);
+            textViewArticleAuthor.setText(author);
 
             Glide.with(this)
                     .load(image)
@@ -175,7 +180,7 @@ public class DetailActivity extends AppCompatActivity implements Callback<Articl
 
     @Override
     public void onFailure(Call<Article> call, Throwable t) {
-        showAlertDialog(getString(R.string.error_title),getString(R.string.error_try_again_later));
+        showAlertDialog(getString(R.string.error_title), getString(R.string.error_try_again_later));
         t.printStackTrace();
     }
 

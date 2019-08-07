@@ -9,5 +9,7 @@
     <string name="error_title">Error</string>
     <string name="error_try_again_later">Sorry, something went wrong, please try again later.</string>
     <string name="news">News</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="ok">OK</string>
 
 </resources>

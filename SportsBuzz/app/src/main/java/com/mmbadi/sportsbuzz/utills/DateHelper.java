@@ -6,14 +6,16 @@ import java.text.SimpleDateFormat;
 
 public class DateHelper {
 
-    public static String getFormattedDate(long date) {
+    public static String getFormattedDate(long date, String format) {
+        String defaultFormat = "yyy-MM-dd HH:mm";
+        format = TextUtils.isEmpty(format)? defaultFormat :format;
         String formattedDated = "";
         if (date > 0) {
             try {
 
                 long itemLong = (long) (date / 1000);
                 java.util.Date d = new java.util.Date(itemLong * 1000L);
-                formattedDated = new SimpleDateFormat("yyy-MM-dd HH:mm").format(d);
+                formattedDated = new SimpleDateFormat(format).format(d);
             } catch (Exception e) {
                 e.printStackTrace();
 

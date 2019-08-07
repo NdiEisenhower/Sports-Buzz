@@ -1,7 +1,6 @@
 package com.mmbadi.sportsbuzz.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,9 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
-
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,18 +21,14 @@ import com.mmbadi.sportsbuzz.R;
 import com.mmbadi.sportsbuzz.models.Sport;
 import com.mmbadi.sportsbuzz.utills.DateHelper;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Sport> sportList = new ArrayList<>();
     private OnArticleClickedListener articleClickedListener;
     private Context context;
+    private String listingDateFormat = "yyy-MM-dd";
 
 
     public ArticleViewAdapter(Context context) {
@@ -71,9 +64,9 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String category = TextUtils.isEmpty(sport.getCategory()) ? sport.getCategoryDisplayName() : sport.getCategory();
             String updatedDate = sport.getUpdatedDate();
             String image = sport.getImageUrlLocal() + sport.getSmallImageName();
-
+            String imageDescription = sport.getExtraImageAlt();
             long date = DateHelper.extractDate(updatedDate);
-            updatedDate = DateHelper.getFormattedDate(date);
+            updatedDate = DateHelper.getFormattedDate(date, listingDateFormat);
 
             if (holder.getItemViewType() == 0) {
                 final ViewHolderHeadline viewHolderHeadline = (ViewHolderHeadline) holder;
@@ -88,6 +81,9 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolderHeadline.textViewCategory.setVisibility(TextUtils.isEmpty(category) ? View.GONE : View.VISIBLE);
                 viewHolderHeadline.textViewUpdatedDate.setVisibility(date < 1 ? View.GONE : View.VISIBLE);
 
+                if (!TextUtils.isEmpty(imageDescription))
+                    viewHolderHeadline.imageViewThumbnail.setContentDescription(imageDescription);
+
                 Glide.with(context)
                         .asDrawable()
                         .load(image)
@@ -95,12 +91,12 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         .into(new CustomTarget<Drawable>() {
                             @Override
                             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                viewHolderHeadline.constraintLayoutImage.setBackground(resource);
+                                viewHolderHeadline.imageViewThumbnail.setImageDrawable(resource);
                             }
 
                             @Override
                             public void onLoadCleared(@Nullable Drawable placeholder) {
-                                viewHolderHeadline.constraintLayoutImage.setBackground(placeholder);
+                                viewHolderHeadline.imageViewThumbnail.setImageDrawable(placeholder);
                             }
                         });
 
@@ -117,7 +113,7 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder.textViewHeadline.setVisibility(TextUtils.isEmpty(headline) ? View.GONE : View.VISIBLE);
                 viewHolder.textViewBlurb.setVisibility(TextUtils.isEmpty(blurb) ? View.GONE : View.VISIBLE);
                 viewHolder.textViewCategory.setVisibility(TextUtils.isEmpty(category) ? View.GONE : View.VISIBLE);
-                viewHolder.textViewUpdatedDate.setVisibility(date <1 ? View.GONE : View.VISIBLE);
+                viewHolder.textViewUpdatedDate.setVisibility(date < 1 ? View.GONE : View.VISIBLE);
                 viewHolder.imageViewThumbnail.setVisibility(TextUtils.isEmpty(image) ? View.GONE : View.VISIBLE);
 
                 viewHolder.textViewHeadline.setText(headline);
@@ -125,12 +121,14 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder.textViewCategory.setText(category);
                 viewHolder.textViewUpdatedDate.setText(updatedDate);
 
+                if (!TextUtils.isEmpty(imageDescription))
+                    viewHolder.imageViewThumbnail.setContentDescription(imageDescription);
+
                 Glide.with(context)
                         .load(image)
                         .centerCrop()
                         .placeholder(R.drawable.placeholder)
                         .into(viewHolder.imageViewThumbnail);
-
 
                 viewHolder.articleLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -190,7 +188,7 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class ViewHolderHeadline extends RecyclerView.ViewHolder {
 
         public TextView textViewHeadline, textViewUpdatedDate, textViewCategory;
-        public ConstraintLayout constraintLayoutImage;
+        public AppCompatImageView imageViewThumbnail;
         public CardView articleLayout;
 
         public ViewHolderHeadline(@NonNull View itemView) {
@@ -198,7 +196,7 @@ public class ArticleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.textViewHeadline = itemView.findViewById(R.id.featured_headline);
             this.textViewCategory = itemView.findViewById(R.id.featured_category);
             this.textViewUpdatedDate = itemView.findViewById(R.id.featured_date);
-            this.constraintLayoutImage = itemView.findViewById(R.id.featured_image);
+            this.imageViewThumbnail = itemView.findViewById(R.id.featured_image);
             this.articleLayout = itemView.findViewById(R.id.articleLayout);
         }
     }
