@@ -4,14 +4,13 @@
     android:id="@+id/articleLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#E4E4E8"
-    app:cardCornerRadius="20dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp"
     android:layout_marginStart="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
     android:layout_marginEnd="10dp"
->
+    android:layout_marginRight="10dp"
+    app:cardBackgroundColor="@color/card_background"
+    app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,13 +22,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_corner"
             android:padding="8dp"
-            android:text="Football"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -46,32 +43,37 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-
             android:padding="6dp"
             android:text="Exceptional' Foden key to Man City future - Guardiola"
             android:textColor="@color/text_color"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/article_image"
+            app:layout_constraintEnd_toStartOf="@+id/article_image_card"
             app:layout_constraintHorizontal_bias="0.049"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/article_category" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/article_image"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/article_image_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/small"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:elevation="10dp"
+            app:cardCornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.99"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.075" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/article_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/article_date"
@@ -80,32 +82,28 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:paddingLeft="6dp"
-            android:text="2019-04-04"
             android:textColor="@color/text_color"
             android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/article_image"
+            app:layout_constraintBottom_toTopOf="@+id/article_blurb"
+            app:layout_constraintEnd_toStartOf="@+id/article_image_card"
             app:layout_constraintHorizontal_bias="0.049"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/article_headline"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/article_headline" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/article_blurb"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:padding="6dp"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:maxLines="5"
-            android:text="Manchester City manager Pep Guardiola expects Phil Foden to play a key role in the side over the next decade and says the 18-year-old will be more involved in the first team next season."
+            android:padding="6dp"
             android:textColor="@color/text_color"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/article_image"
-             />
+            app:layout_constraintTop_toBottomOf="@+id/article_image_card" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.cardview.widget.CardView>

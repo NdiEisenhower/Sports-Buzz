@@ -30,7 +30,7 @@
         android:textSize="20sp"
         android:visibility="gone"
         android:layout_marginTop="8dp"
-        android:text="Pull to refresh"
+        android:text="@string/pull_to_refresh"
         app:layout_constraintEnd_toEndOf="@+id/pullToRefresh"
         app:layout_constraintStart_toStartOf="@+id/pullToRefresh"
         app:layout_constraintTop_toTopOf="@+id/pullToRefresh" />

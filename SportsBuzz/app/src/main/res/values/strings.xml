@@ -11,5 +11,6 @@
     <string name="news">News</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="ok">OK</string>
+    <string name="pull_to_refresh">Pull to refresh</string>
 
 </resources>
